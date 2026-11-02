@@ -1,16 +1,19 @@
 mod environment;
 mod graph;
 mod q_learning;
+mod sarsa;
 
 use environment::{Environment, GridWorld};
 use rand::RngExt;
 
 use crate::q_learning::QLearning;
+use crate::sarsa::SARSA;
+
 use graph::draw_rewards;
 
 fn main() {
     let mut game = GridWorld::new();
-    let mut agent = QLearning {
+    let mut agent = SARSA {
         q_table: [[0.0; 4]; 48],
         alpha: 0.1,
         gamma: 1.0,
@@ -28,23 +31,38 @@ fn main() {
         let mut total_reward = 0.0;
         let epsilon = (1.0 - episode as f64 / EPISODES_NUM as f64).max(0.01);
 
-        for _ in 0..MAX_STEPS {
-            let action = if rng.random_bool(epsilon) {
-                rng.random_range(actions.to_owned())
-            } else {
-                agent.get_action(state)
-            };
+        let mut action = if rng.random_bool(epsilon) {
+            rng.random_range(actions.to_owned())
+        } else {
+            agent.get_action(state)
+        };
 
+        for _ in 0..MAX_STEPS {
             let result = game.step(action);
 
-            agent.update(state, action, result.reward, result.next_state, result.done);
+            let next_action = if rng.random_bool(epsilon) {
+                rng.random_range(actions.to_owned())
+            } else {
+                agent.get_action(result.next_state)
+            };
 
-            state = result.next_state;
+            agent.update(
+                state,
+                action,
+                result.reward,
+                result.next_state,
+                next_action,
+                result.done,
+            );
+
             total_reward += result.reward;
 
             if result.done {
                 break;
             }
+
+            state = result.next_state;
+            action = next_action;
         }
 
         if (episode + 1) % 100 == 0 {
@@ -70,5 +88,5 @@ fn main() {
         }
     }
 
-    draw_rewards(&rewards, 100).expect("Failed to draw graph");
+    draw_rewards("SARSA", &rewards, 100).expect("Failed to draw graph");
 }

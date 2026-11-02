@@ -30,10 +30,29 @@ $$Q(s,a) \leftarrow Q(s,a) + \alpha \left[r + \gamma \max_{a'} Q(s',a') - Q(s,a)
 - Action($a$): 선택한 행동
 - Reward($r$): 행동에 따른 보상
 - Alpha($\alpha$): 학습률
-- Gamma($\gamma$):
+- Gamma($\gamma$): 감쇠 인자
 - $Q(s, a)$: 상태 $s$에서 행동 $a$의 value
 
-![reward graph](./images/rewards.png)
+![reward graph](./images/q_learning_rewards.png)
+
+- `10000` episodes, `1000` steps
+- $\gamma$: 1.0
+- $\alpha$: 0.1
+
+### SARSA
+
+$$Q(s,a) \leftarrow Q(s,a) + \alpha \left[r + \gamma Q(s',a') - Q(s,a)\right]$$
+
+- State($s$): 현재 상태
+- Action($a$): 선택한 행동
+- Reward($r$): 행동에 따른 보상
+- Next State($s'$): 다음 상태
+- Next Action($a'$): 다음 상태에서 실제 선택한 행동
+- Alpha($\alpha$): 학습률
+- Gamma($\gamma$): 감쇠 인자
+- $Q(s, a)$: 상태 $s$에서 행동 $a$의 value
+
+![reward graph](./images/sarsa_rewards.png)
 
 - `10000` episodes, `1000` steps
 - $\gamma$: 1.0
