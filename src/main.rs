@@ -20,16 +20,16 @@ fn main() {
 
     const EPISODES_NUM: usize = 10_000;
     const MAX_STEPS: usize = 1_000;
-    const EPSILON: f64 = 0.1;
 
     let mut rewards = Vec::with_capacity(EPISODES_NUM);
 
     for episode in 0..EPISODES_NUM {
         let mut state = game.reset();
         let mut total_reward = 0.0;
+        let epsilon = (1.0 - episode as f64 / EPISODES_NUM as f64).max(0.01);
 
         for _ in 0..MAX_STEPS {
-            let action = if rng.random_bool(EPSILON) {
+            let action = if rng.random_bool(epsilon) {
                 rng.random_range(actions.to_owned())
             } else {
                 agent.best_action(state)
