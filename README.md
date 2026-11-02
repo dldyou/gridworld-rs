@@ -1,5 +1,11 @@
 # Gridworld
 
+## Build & Run
+
+```bash
+cargo run
+```
+
 ## Environment
 
 Cliff Walking
