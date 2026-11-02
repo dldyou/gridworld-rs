@@ -1,17 +1,19 @@
 mod environment;
+mod graph;
 mod q_learning;
 
 use environment::{Environment, GridWorld};
 use rand::RngExt;
 
 use crate::q_learning::QLearning;
+use graph::draw_rewards;
 
 fn main() {
     let mut game = GridWorld::new();
     let mut agent = QLearning {
         q_table: [[0.0; 4]; 48],
         alpha: 0.1,
-        gamma: 0.9,
+        gamma: 1.0,
     };
     let mut rng = rand::rng();
     let actions = 0..4;
@@ -19,6 +21,8 @@ fn main() {
     const EPISODES_NUM: usize = 10_000;
     const MAX_STEPS: usize = 1_000;
     const EPSILON: f64 = 0.1;
+
+    let mut rewards = Vec::with_capacity(EPISODES_NUM);
 
     for episode in 0..EPISODES_NUM {
         let mut state = game.reset();
@@ -43,14 +47,11 @@ fn main() {
             }
         }
 
-        if (episode + 1) % (EPISODES_NUM / 10) == 0 {
-            println!(
-                "Episode: {} ({}%), Reward: {}",
-                episode + 1,
-                (episode + 1) as f64 / (EPISODES_NUM / 100) as f64,
-                total_reward
-            );
+        if (episode + 1) % 100 == 0 {
+            println!("Episode: {}, Reward: {}", episode + 1, total_reward);
         }
+
+        rewards.push(total_reward);
     }
     agent.print();
 
@@ -65,7 +66,9 @@ fn main() {
 
         if result.done {
             println!("{state} (GOAL)");
-            return;
+            break;
         }
     }
+
+    draw_rewards(&rewards, 100).expect("Failed to draw graph");
 }
