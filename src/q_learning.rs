@@ -25,7 +25,7 @@ impl QLearning {
         let current = self.q_table[state][action];
         let target = reward + self.gamma * next_max;
 
-        self.q_table[state][action] = self.alpha * (target - current);
+        self.q_table[state][action] += self.alpha * (target - current);
     }
 
     pub fn get_action(&self, state: usize) -> usize {
