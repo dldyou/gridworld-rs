@@ -1,7 +1,7 @@
 use plotters::prelude::*;
 use std::error::Error;
 
-pub fn draw_rewards(rewards: &[f64], window: usize) -> Result<(), Box<dyn Error>> {
+pub fn draw_rewards(caption: &str, rewards: &[f64], window: usize) -> Result<(), Box<dyn Error>> {
     if rewards.is_empty() {
         return Ok(());
     }
@@ -14,7 +14,7 @@ pub fn draw_rewards(rewards: &[f64], window: usize) -> Result<(), Box<dyn Error>
     let max = rewards.iter().copied().fold(f64::NEG_INFINITY, f64::max);
 
     let mut chart = ChartBuilder::on(&root)
-        .caption("Q-Learning Reward", ("sans-serif", 30))
+        .caption(caption, ("sans-serif", 30))
         .margin(20)
         .x_label_area_size(40)
         .y_label_area_size(60)

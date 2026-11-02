@@ -33,7 +33,7 @@ $$Q(s,a) \leftarrow Q(s,a) + \alpha \left[r + \gamma \max_{a'} Q(s',a') - Q(s,a)
 - Gamma($\gamma$):
 - $Q(s, a)$: 상태 $s$에서 행동 $a$의 value
 
-![reward graph](./rewards.png)
+![reward graph](./images/rewards.png)
 
 - `10000` episodes, `1000` steps
 - $\gamma$: 1.0
