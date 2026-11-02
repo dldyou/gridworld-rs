@@ -28,7 +28,7 @@ impl QLearning {
         self.q_table[state][action] = self.alpha * (target - current);
     }
 
-    pub fn best_action(&self, state: usize) -> usize {
+    pub fn get_action(&self, state: usize) -> usize {
         let mut best = 0;
 
         for action in 1..4 {

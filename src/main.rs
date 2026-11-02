@@ -32,7 +32,7 @@ fn main() {
             let action = if rng.random_bool(epsilon) {
                 rng.random_range(actions.to_owned())
             } else {
-                agent.best_action(state)
+                agent.get_action(state)
             };
 
             let result = game.step(action);
@@ -59,7 +59,7 @@ fn main() {
 
     loop {
         print!("{state} -> ");
-        let action = agent.best_action(state);
+        let action = agent.get_action(state);
         let result = game.step(action);
 
         state = result.next_state;
